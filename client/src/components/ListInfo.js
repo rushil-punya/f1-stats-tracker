@@ -76,16 +76,15 @@ const ListInfo = () => {
                     <th scope="col">Position</th>
                     <th scope="col">Name</th>
                     <th scope="col">Points</th>
-                    <th scope="col">Url</th>
                 </tr>
             </thead>
             <tbody>
                 {constructor.map(entry => (
                     <tr>
                         <td>{entry.position}</td>
-                        <td>{entry.name}</td>
+                        <td><a href = {entry.url}>{entry.name}</a></td>
                         <td>{entry.points}</td>
-                        <td>{entry.url}</td>
+                        <td></td>
                     </tr>
                 ))}
             </tbody>
@@ -99,17 +98,15 @@ const ListInfo = () => {
                 <th scope="col">Forename</th>
                 <th scope="col">Surname</th>
                 <th scope="col">Points</th>
-                <th scope="col">Url</th>
             </tr>
         </thead>
         <tbody>
             {driver.map(entry => (
                 <tr>
                     <td>{entry.position}</td>
-                    <td>{entry.forename}</td>
-                    <td>{entry.surname}</td>
+                    <td><a href = {entry.url}>{entry.forename}</a></td>
+                    <td><a href = {entry.url}>{entry.surname}</a></td>
                     <td>{entry.points}</td>
-                    <td>{entry.url}</td>
                 </tr>
             ))}
         </tbody>
@@ -122,16 +119,15 @@ const ListInfo = () => {
                 <th scope="col">Circuit</th>
                 <th scope="col">Date</th>
                 <th scope="col">Round</th>
-                <th scope="col">Url</th>
+                <th scope="col">Details</th>
             </tr>
         </thead>
         <tbody>
             {race.map(entry => (
                 <tr>
-                    <td>{entry.name}</td>
+                    <td><a href = {entry.url}>{entry.name}</a></td>
                     <td>{entry.date}</td>
                     <td>{entry.round}</td>
-                    <td>{entry.url}</td>
                 </tr>
             ))}
         </tbody>
