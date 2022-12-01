@@ -1,10 +1,27 @@
 import React,{Fragment, useEffect, useState} from "react";
+import { Route, Link } from 'react-router-dom';
+import Details from "./Details";
 
 const ListInfo = () => {
     const [constructor, setConstructor] = useState([]);
     const [driver, setDriver] = useState([]);
     const [race, setRace] = useState([]);
     const [year, setYear] = useState("");
+    const [raceid, setPage] = useState("");
+
+    const newPage = async (raceid) =>{
+
+        raceid.preventDefault();
+        try {
+            var response;
+            response = await fetch("http://localhost:5000/details/" + raceid);
+        } catch (error) {
+            console.error(error.message);
+        }
+        var jsonData = await response.json();
+        setPage(jsonData);
+    }
+
     const getInfo = async e => {
         e.preventDefault();
         try {
@@ -95,8 +112,7 @@ const ListInfo = () => {
         <thead>
             <tr>
                 <th scope="col">Position</th>
-                <th scope="col">Forename</th>
-                <th scope="col">Surname</th>
+                <th scope="col">Name</th>
                 <th scope="col">Points</th>
             </tr>
         </thead>
@@ -104,8 +120,7 @@ const ListInfo = () => {
             {driver.map(entry => (
                 <tr>
                     <td>{entry.position}</td>
-                    <td><a href = {entry.url}>{entry.forename}</a></td>
-                    <td><a href = {entry.url}>{entry.surname}</a></td>
+                    <td><a href = {entry.url}>{entry.forename} {entry.surname}</a></td>
                     <td>{entry.points}</td>
                 </tr>
             ))}
@@ -116,18 +131,19 @@ const ListInfo = () => {
         <table class="table mt-5 text-center">
         <thead>
             <tr>
+                <th scope="col">Round</th>
                 <th scope="col">Circuit</th>
                 <th scope="col">Date</th>
-                <th scope="col">Round</th>
                 <th scope="col">Details</th>
             </tr>
         </thead>
         <tbody>
             {race.map(entry => (
                 <tr>
+                    <td>{entry.round}</td>
                     <td><a href = {entry.url}>{entry.name}</a></td>
                     <td>{entry.date}</td>
-                    <td>{entry.round}</td>
+                    <td><button className = "btn btn-failure" type="button" onClick={() => newPage(entry.raceid)}><Link to ='/details'>Click Me!</Link></button></td>
                 </tr>
             ))}
         </tbody>

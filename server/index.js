@@ -62,8 +62,20 @@ app.get("/races", async(req, res) => {
 app.get("/races/:year", async(req, res) => {
     try {
         const {year} = req.params;
-        const races = await pool.query("SELECT circuits.name, races.date, races.round, races.url FROM races JOIN circuits ON races.circuitid = circuits.circuitid WHERE year = $1", [year]);
+        const races = await pool.query("SELECT circuits.name, races.date, races.round, races.url, races.raceid FROM races JOIN circuits ON races.circuitid = circuits.circuitid WHERE year = $1", [year]);
         res.json(races.rows)
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+//get specfic race information
+app.get("/details/:raceid", async(req, res) => {
+    try {
+        const {raceid} = req.params;
+        const results = await pool.query("SELECT results.position, drivers.forename, drivers.surname, results.points, drivers.url FROM drivers JOIN results ON drivers.driverid = results.driverid WHERE raceid = $1 ORDER BY position ASC", [raceid]);
+        const position = await pool.query("SELECT results.grid, drivers.forename, drivers.surname, drivers.url FROM drivers JOIN results ON drivers.driverid = results.driverid WHERE raceid = $1 ORDER BY grid ASC", [raceid]);
+        res.json(results.rows);
     } catch (err) {
         console.error(err.message);
     }
