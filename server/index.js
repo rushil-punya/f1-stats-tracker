@@ -62,20 +62,32 @@ app.get("/races", async(req, res) => {
 app.get("/races/:year", async(req, res) => {
     try {
         const {year} = req.params;
-        const races = await pool.query("SELECT circuits.name, races.date, races.round, races.url, races.raceid FROM races JOIN circuits ON races.circuitid = circuits.circuitid WHERE year = $1", [year]);
+        const races = await pool.query("SELECT circuits.name, circuits.url AS curl, races.date, races.round, races.url, races.raceid FROM races JOIN circuits ON races.circuitid = circuits.circuitid WHERE year = $1", [year]);
         res.json(races.rows)
     } catch (err) {
         console.error(err.message);
     }
 })
 
-//get specfic race information
+//get specfic race information - standings
 app.get("/details/:raceid", async(req, res) => {
     try {
         const {raceid} = req.params;
-        const results = await pool.query("SELECT results.position, drivers.forename, drivers.surname, results.points, drivers.url FROM drivers JOIN results ON drivers.driverid = results.driverid WHERE raceid = $1 ORDER BY position ASC", [raceid]);
-        const position = await pool.query("SELECT results.grid, drivers.forename, drivers.surname, drivers.url FROM drivers JOIN results ON drivers.driverid = results.driverid WHERE raceid = $1 ORDER BY grid ASC", [raceid]);
+        const results = await pool.query("SELECT results.position, drivers.forename, drivers.surname, results.points, results.grid, drivers.url FROM drivers JOIN results ON drivers.driverid = results.driverid WHERE raceid = $1 ORDER BY position ASC", [raceid]);
+        
         res.json(results.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+
+app.get("/detailsquali/:raceid", async(req, res) => {
+    try {
+        const {raceid} = req.params;
+       
+        const position = await pool.query("SELECT results.grid, drivers.forename, drivers.surname, drivers.url FROM drivers JOIN results ON drivers.driverid = results.driverid WHERE raceid = $1 ORDER BY grid ASC", [raceid]);
+        res.json(position.rows);
     } catch (err) {
         console.error(err.message);
     }
