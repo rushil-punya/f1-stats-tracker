@@ -1,3 +1,7 @@
+https://youtu.be/JxEcs6q6VVE
+
+
+
 How to run:
 First, create a database in PostgreSQL and copy the contents of server/database.sql to create the database
 Next, adjust the credentials of server/db.js to match your local ones
